@@ -1,0 +1,95 @@
+input {
+    font-size: 20px;
+}
+
+button {
+    font-size: 20px;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.class {
+    text-transform: none !important;
+}
+
+.hidden {
+    display: none;
+}
+.visible {
+    display: block;
+}
+h1 {
+    color: black;
+    font-size: 350%;
+    margin: auto;
+}
+h2 {
+    color: orange;
+    font-size: 320%;
+}
+#playerName {
+    float: right;
+    color: red;
+    font-size: 450%;
+}
+#battleArea {
+    background-color: black;
+}
+#playerTable, #enemyTable {
+    margin: auto;
+}
+#flagImage, #flagDiv {
+    width: 50%;
+    height: 50%;
+}
+.my-event {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 2px;
+    background-color: #1867c0;
+    color: #ffffff;
+    border: 1px solid #1867c0;
+    width: 100%;
+    font-size: 12px;
+    padding: 3px;
+    cursor: pointer;
+    margin-bottom: 1px;
+  }
+
+  /* @import url('https://fonts.googleapis.com/css?family=Proza+Libre|Fira+Mono'); */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+  input {
+    padding: 1rem 1rem;
+    font-size: 2rem;
+    border: 0;
+    border-radius: 3px;
+    background: #fff;
+  }
+  
+
+
+h1 {
+  font-family: 'Proza Libre', sans-serif;
+  color: #fff;
+  font-weight: 300;
+}
+
+input[type="color"]{
+  width:40px;
+  border:1px solid black;
+  margin:0px;
+  padding:0px !important;
+  height:40px;
+}
+
+

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+  <script src=".\app.js"></script>
+
+
+  <!-- <script src=".\ENTER YOUR JAVASCRIPT FILENAME HERE RYAN></script> -->
+
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDvzMCsyGXydAQ64mJ6Wxqj5MMUQgMt5q0",
+    authDomain: "battleship-dd875.firebaseapp.com",
+    databaseURL: "https://battleship-dd875.firebaseio.com",
+    projectId: "battleship-dd875",
+    storageBucket: "battleship-dd875.appspot.com",
+    messagingSenderId: "835160490310"
+  };
+  firebase.initializeApp(config);
+  var rootRef = firebase.database();
+  var gameRef = rootRef.ref('games');
+  var userRef = rootRef.ref('users');
+</script>
+
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-content>
+
+
+        <!-- Sign-in Screen  -->
+        <v-container style="background-color: black" v-show="screen === 0">
+            <v-layout row align-center justify-center style="background-color: rgb(76, 113, 216)">
+            <v-flex lg6>
+            <v-card class = "pa-3" >
+
+                <v-layout align-center justify-center>
+                    <h1>Battleship Origins</h1>
+                </v-layout>
+                    <v-layout column>
+                            <v-flex lg9 md9 sm6 class ="pa-2">
+                              <v-img :src="`./images/pirateship.jpg`" aspect-ratio="2" transition="slide-x-transition">
+                            </v-flex>
+                          </v-layout>
+                
+            <v-layout row class="pa-4" justify-center>
+                
+                <v-flex >
+                        <v-text-field id="email"
+                          label="Email"
+                        ></v-text-field>
+                      </v-flex>
+            </v-layout>
+            <v-layout row class="pa-4" justify-center>
+                    <v-flex >
+                            <v-text-field id="password"
+                              label="Password" 
+                              :type="'password'"
+                            ></v-text-field>
+                          </v-flex> 
+            </v-layout>
+            <v-layout class="pa-4" justify-center>
+                          <template>
+                                <div >
+                                  <v-btn color="info" id="btnLogIn">Log In</v-btn>
+                                  <v-btn color="info" id="btnSignUp">Sign Up</v-btn>
+                                  
+                                </div>
+                                </template>     
+
+                            </v-layout>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
+        </v-container>
+
+        <!-- End of sign-in screen -->
+
+        <!-- Start of Lobby Screen -->
+
+        <v-container style="background-color: black" v-show="screen === 1">
+          <v-layout row align-center justify-center style="background-color: rgb(155, 35, 75)">
+          <v-flex lg9>
+          <v-card class = "pa-3" >
+
+              <v-layout align-center justify-center>
+                  <h1>Welcome {{username}}!</h1>
+              </v-layout>
+              <v-layout align-center justify-center>
+              <h2>Games Played: {{gamesPlayed}}</h2>
+            </v-layout>
+            <v-layout align-center justify-center>
+                <h2>Games Won: {{gamesWon}} </h2>
+              </v-layout>
+           
+                  <v-layout row align-center justify-center>
+
+                          <v-flex lg6 md6 sm6 class ="pa-2">
+                            <v-img :src="`${userPicNum}`" aspect-ratio="2" transition="slide-x-transition" id="profilepic">
+                          </v-flex>
+                        </v-layout>
+              
+          <v-layout row class="pa-4" justify-center>
+              
+              <v-flex >
+                 
+
+<!-- testing v-data-table -->
+
+<h1>Open games</h1>
+<v-data-table
+      :headers="headers"
+      :items="availableGames"
+      class="elevation-1"
+    >
+      <template slot="headerCell" slot-scope="props">
+        <v-tooltip bottom>
+          <span slot="activator">
+            {{ props.header.text }}
+          </span>
+          <span>
+            {{ props.header.text }}
+          </span>
+        </v-tooltip>
+      </template>
+      <template slot="items" slot-scope="props">
+        <td >{{ props.item.playerOne }}</td>
+        <td >{{ props.item.playerTwo }}</td>
+        <td style="align-content: right">Waiting for another player...</td>
+        <td><v-btn v-model="availableGames.gameNumber" class="text-transform-none" :input-value="`${props.item.gameNumber}`" onclick = "addPlayerTwo(this)" style="text-transform: none !important"> {{props.item.gameNumber}} </v-btn></td>
+      </template>
+    </v-data-table>
+
+
+
+    <h1>Ongoing games</h1>
+<v-data-table
+      :headers="headers"
+      :items="gamesInProgress"
+      class="elevation-1"
+    >
+      <template slot="headerCell" slot-scope="props">
+        <v-tooltip bottom>
+          <span slot="activator">
+            {{ props.header.text }}
+          </span>
+          <span>
+            {{ props.header.text }}
+          </span>
+        </v-tooltip>
+      </template>
+      <template slot="items" slot-scope="props">
+        <td >{{ props.item.playerOne }}</td>
+        <td >{{ props.item.playerTwo }}</td>
+        <td style="align-content: right">In progress</td>
+        
+      </template>
+    </v-data-table>
+
+
+
+    <h1>Past games</h1>
+  <v-data-table
+      :headers="headers"
+      :items="pastGames"
+      class="elevation-1"
+    >
+      <template slot="headerCell" slot-scope="props">
+        <v-tooltip bottom>
+          <span slot="activator">
+            {{ props.header.text }}
+          </span>
+          <span>
+            {{ props.header.text }}
+          </span>
+        </v-tooltip>
+      </template>
+      <template slot="items" slot-scope="props">
+        <td >{{ props.item.playerOne }}</td>
+        <td >{{ props.item.playerTwo }}</td>
+        <td style="align-content: right">{{ props.item.status }}</td>
+        
+      </template>
+    </v-data-table>
+
+                    </v-flex>
+          </v-layout>
+          <v-layout row class="pa-4" justify-center>
+                  <v-flex >
+                          <!-- Empty -->
+                        </v-flex> 
+          </v-layout>
+          </v-card>
+          <v-card>
+          <v-layout class="pa-4" justify-center>
+              <template>
+                </template>
+                        <template>
+                              <div >
+                                <v-btn color="success" id="btnNewGame">New Game</v-btn>
+                                <v-btn color="red" id="btnLogOut">Log Out</v-btn>
+                              </div>
+                              </template>     
+
+                          </v-layout>
+                          </v-card>
+                      </v-flex>
+                  </v-layout>
+                  
+      </v-container>
+
+
+
+<!-- End of Lobby Screen -->
+
+
+
+<!-- RYAN PUT BATTLE SHIP GAME UI STUFF HERE -->
+<v-container style="background-color: black" v-show="screen === 2">
+
+  
+
+
+
+
+
+
+</v-container>
+
+<!-- END OF BATTLE SHIP GAME UI -->
+
+
+      </v-content>
+    </v-app>
+  </div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script>
+    var battleship = new Vue({ 
+      el: '#app',
+      data: {
+        screen: 0,
+        username: "",
+        userPicNum: "./images/anonUser.png",
+        availableGames: [],
+        gamesInProgress: [],
+        pastGames: [],
+        // headers: ["player 1", "player 2", "Status"],
+        profilepics: ["./images/pirate1.jpg", "./images/anonUser.png", "./images/daveyJones.png","./images/femalePirate.png"],
+
+
+
+         headers: [
+        {
+          text: 'Player 1',
+          align: 'left',
+          sortable: true,
+          value: 'playerOne'
+        },
+        { text: 'Player 2', value: 'playerTwo' },
+        { text: 'Status', value: 'status' },
+        { text: 'Join Game #', value: 'action' }
+      ],
+
+      gamesPlayed: 0,
+      gamesWon: 0
+       
+      }
+     })
+    authenticate(battleship);
+  </script>
+</body>
+</html>

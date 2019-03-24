@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="style.css">
+  
+  <script src=".\app.js"></script>
+    <meta charset="UTF-8" />
+
+  <!-- <script src=".\ENTER YOUR JAVASCRIPT FILENAME HERE RYAN></script> -->
+ 
+
+
+<script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+<script>
+
+//Need to edit for habit Tracker
+  // Initialize Firebase
+  
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCvrilJ5Mz6l4BJZGfTzQ4NRkeSia3ioxA",
+    authDomain: "habit-tracker-477f4.firebaseapp.com",
+    databaseURL: "https://habit-tracker-477f4.firebaseio.com",
+    projectId: "habit-tracker-477f4",
+    storageBucket: "habit-tracker-477f4.appspot.com",
+    messagingSenderId: "772040810248"
+  };
+  firebase.initializeApp(config);
+
+  var rootRef = firebase.database();
+  //var gameRef = rootRef.ref('games'); will need to modify for our use
+  //var userRef = rootRef.ref('users');
+
+
+
+</script>
+
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-content>
+
+
+        <!-- Sign-in Screen  -->
+        <v-container style="background-color: black" v-show="screen === 0">
+            <v-layout row align-center justify-center style="background-color: rgb(76, 113, 216)">
+            <v-flex lg6>
+            <v-card class = "pa-3" >
+
+                <v-layout align-center justify-center>
+                    <h1>Habit Tracker</h1>
+                </v-layout>
+                    <v-layout column>
+                            <v-flex lg9 md9 sm6 class ="pa-2">
+                              <v-img :src="`./images/habitLogo.jpg`" aspect-ratio="2" transition="slide-x-transition">
+                            </v-flex>
+                          </v-layout>
+                
+            <v-layout row class="pa-4" justify-center>
+                
+                <v-flex >
+                        <v-text-field id="email"
+                          label="Email" value="test@test.com"
+                        ></v-text-field>
+                      </v-flex>
+            </v-layout>
+            <v-layout row class="pa-4" justify-center>
+                    <v-flex >
+                            <v-text-field id="password"
+                              label="Password" 
+                              :type="'password'" value="JonnyD1991"
+                            ></v-text-field>
+                          </v-flex> 
+            </v-layout>
+            <v-layout class="pa-4" justify-center>
+                          <template>
+                                <div >
+                                  <v-btn color="info" id="btnLogIn">Log In</v-btn>
+                                  <v-btn color="info" id="btnSignUp">Sign Up</v-btn>
+                                  
+                                </div>
+                                </template>     
+
+                            </v-layout>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
+        </v-container>
+
+        <!-- End of sign-in screen -->
+
+
+
+        <!-- Start of Lobby Screen -->
+        <v-container style="background-color: black" v-show="screen === 1">
+            <!-- <h1>{{battleship.userPicNum}}</h1> -->
+
+            <v-layout text-xs-center row align-center justify-center style="background-color: rgb(98, 107, 133)">
+                <v-flex lg12 style="background-color: rgb(98, 107, 133)">
+                
+                    <template>
+                        <v-toolbar style="background-color: rgb(176, 183, 204)">
+                          <v-toolbar-side-icon></v-toolbar-side-icon>
+                          <v-toolbar-title>Habit Calendar</v-toolbar-title>
+                          <v-spacer></v-spacer>
+                          <v-toolbar-items class="hidden-sm-and-down">
+                            <v-btn flat>Link One</v-btn>
+                            <v-btn flat>Link Two</v-btn>
+                            <v-btn flat>Link Three</v-btn>
+                          </v-toolbar-items>
+                        </v-toolbar>
+                      </template>
+
+
+
+
+
+      <div id="app">
+          <v-app id="inspire">
+            <v-layout wrap style="background-color: rgb(98, 107, 133)">
+              <v-flex
+                xs12
+                class="mb-3"
+                style="background-color: rgb(98, 107, 133); margin-top: 40px"
+              >
+                <v-sheet height="500">
+                  <v-calendar
+                    ref="calendar"
+                    v-model="start"
+                    :type="type"
+                    :end="end"
+                    color="white"
+                    :dark="true"
+                  >
+                  <template v-slot:day="{ date }">
+                      <template v-for="event in eventsMap[date]">
+                        <v-menu
+                          :key="event.title"
+                          v-model="event.open"
+                          full-width
+                          offset-x
+                          
+                        >
+                          <template v-slot:activator="{ on }" >
+                            <div
+                              v-if="!event.time"
+                              v-ripple
+                              class="my-event color"
+                              v-on="on"
+                              
+                              v-html="event.details"
+                              
+                            ></div>
+                          </template>
+                          <v-card
+                            color="grey lighten-4"
+                            min-width="350px"
+                            flat
+                          >
+                            <v-toolbar
+                              color="green"
+                              dark
+                            >
+                              <v-btn icon>
+                                <v-icon>edit</v-icon>
+                              </v-btn>
+                              <v-toolbar-title v-html="event.title"></v-toolbar-title>
+                              <v-spacer></v-spacer>
+                              <v-btn icon>
+                                <v-icon>favorite</v-icon>
+                              </v-btn>
+                              <v-btn icon>
+                                <v-icon>more_vert</v-icon>
+                              </v-btn>
+                            </v-toolbar>
+                            <v-card-title primary-title>
+                              <span v-html="event.details"></span>
+                            </v-card-title>
+                            <v-card-actions>
+                              <v-btn
+                                flat
+                                color="black"
+                              >
+                                Cancel
+                              </v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-menu>
+                      </template>
+                    </template>
+                
+                </v-calendar>
+                </v-sheet>
+              </v-flex>
+          
+              <v-flex
+                sm4
+                xs12
+                class="text-sm-left text-xs-center"
+              >
+                <v-btn @click="$refs.calendar.prev()">
+                  <v-icon
+                    dark
+                    left
+                  >
+                    keyboard_arrow_left
+                  </v-icon>
+                  Prev
+                </v-btn>
+              </v-flex>
+              <!-- <v-flex
+                sm4
+                xs12
+                class="text-xs-center"
+              >
+                <v-select
+                  v-model="type"
+                  :items="typeOptions"
+                  label="Type"
+                ></v-select>
+              </v-flex> -->
+              <v-flex
+                sm4
+                xs12
+                class="text-sm-right text-xs-center"
+              >
+                <v-btn @click="$refs.calendar.next()">
+                  Next
+                  <v-icon
+                    right
+                    dark
+                  >
+                    keyboard_arrow_right
+                  </v-icon>
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </v-app>
+        </div>
+
+        <div id="app" v-bind:style="{ backgroundColor: color}">
+            <h1>Try a color</h1>
+              <div class="color">
+            <input type="text" v-bind:style="{ color: color}" v-model="color" maxlength="7" placeholder="#000000"/>
+              <input type="color" v-model="color"/>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+            
+            
+           
+            </v-flex>
+            </v-layout>
+        
+        </v-container>
+
+        <!-- End of Lobby Screen -->
+
+
+
+
+      </v-content>
+      </v-app>
+    </div>
+</body>
+
+ 
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+
+  
+  <script>
+    var battleship = new Vue({ 
+      el: '#app',
+      data: {
+        screen: 0,
+        color: '#673AB7',
+
+
+      picker: [],
+      //new Date().toISOString().substr(0, 10),
+      landscape: false,
+      reactive: false,
+
+
+
+
+
+
+    type: 'month',
+    start: '2019-03-01',
+    end: '2019-03-06',
+    typeOptions: [
+      { text: 'Day', value: 'day' },
+      { text: '4 Day', value: '4day' },
+      { text: 'Week', value: 'week' },
+      { text: 'Month', value: 'month' },
+      { text: 'Custom Daily', value: 'custom-daily' },
+      { text: 'Custom Weekly', value: 'custom-weekly' }
+    ],
+
+        username: "",
+        userPicNum: "./images/anonUser.png",
+        availableGames: [],
+        gamesInProgress: [],
+        pastGames: [],
+        // headers: ["player 1", "player 2", "Status"],
+        profilepics: ["./images/pirate1.jpg", "./images/anonUser.png", "./images/daveyJones.png","./images/femalePirate.png"],
+        
+
+        headersInProgress: [
+        {
+          text: 'Player 1',
+          align: 'left',
+          sortable: true,
+          value: 'playerOne'
+        },
+        { text: 'Player 2', value: 'playerTwo' },
+        { text: 'Status', value: 'status' }        
+      ],
+
+headersGameOver: [
+        {
+          text: 'Player 1',
+          align: 'left',
+          sortable: true,
+          value: 'playerOne'
+        },
+        { text: 'Player 2', value: 'playerTwo' },
+        { text: 'Status', value: 'status' },
+        { text: 'Winner', value: 'winner' }
+      ],
+
+         headers: [
+        {
+          text: 'Player 1',
+          align: 'left',
+          sortable: true,
+          value: 'playerOne'
+        },
+        { text: 'Player 2', value: 'playerTwo' },
+        { text: 'Status', value: 'status' },
+        { text: 'Join Game #', value: 'action' }
+      ],
+
+      gamesPlayed: 0,
+      gamesWon: 0,
+
+      green: "green",
+
+      
+    events: [
+  
+      
+      
+      {
+        title: 'Habit',
+        details: 'I acomplished by habit!',
+        date: '2019-03-20',
+        open: false
+      },
+
+      {
+        title: 'Habit 1',
+        details: 'Going to the beach!',
+        date: '2019-03-20',
+        open: false
+      },
+      {
+        title: 'Habit 2',
+        details: 'Spending time on how we do not have enough time',
+        date: '2019-03-07',
+        open: false
+      },
+      {
+        title: 'Habit 4',
+        details: 'Celebrate responsibly',
+        date: '2019-03-03',
+        open: false
+      },
+      {
+        title: 'Habit 3',
+        details: 'Eat chocolate until you pass out',
+        date: '2019-03-01',
+        open: false
+      },
+      {
+        title: 'Habit 6',
+        details: 'Mute myself the whole time and wonder why I am on this call',
+        date: '2019-03-21',
+        open: false
+      },
+      {
+        title: 'Habit 1',
+        details: 'Code like there is no tommorrow',
+        date: '2019-03-01',
+        open: false
+      }
+    ]
+  
+       
+      },
+
+      computed: {
+    // convert the list of events into a map of lists keyed by date
+    eventsMap () {
+      const map = {}
+      this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
+      return map
+    }
+  },
+
+  methods: {
+    open (event) {
+      alert(event.title)
+    }
+     }})
+
+     
+    authenticate(battleship);
+  </script>
+</body>
+</html>
